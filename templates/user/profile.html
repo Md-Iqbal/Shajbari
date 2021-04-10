@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+{{ user.first_name }}'s Profile
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <h1>My Profile</h1>
+      </div>
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li><a href="{% url 'App_User:ProfileView' username=user.username %}">Account</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>{{ user.username }}'s Profile</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-2">
+    <div class="row">
+      {% block profile_sidebar %}
+      {% include "user/profile_sidebar.html" %}
+      {% endblock profile_sidebar %}
+      <div class="col-lg-8">
+        <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+          <h4>Personal Info</h4>
+          <a class="btn btn-primary margin-right-none" href="{% url 'App_User:UserInfoUpdateView' %}">Update Profile</a>
+        </div>
+        <hr class="padding-bottom-1x">
+        <form class="row" method="POST">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-fn">First Name</label>
+              <input class="form-control" type="text" id="account-fn" value="{{ user.first_name }}" disabled required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-ln">Last Name</label>
+              <input class="form-control" type="text" id="account-ln" value="{{ user.last_name }}" disabled required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-email">E-mail Address</label>
+              <input class="form-control" type="email" id="account-email" value="{{ user.email }}" disabled>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-phone">Phone Number</label>
+              <input class="form-control" type="text" id="account-phone" value="{{ profile.phone }}" disabled required>
+            </div>
+          </div>
+          <!-- <div class="col-md-6">
+                <div class="form-group">
+                  <label for="account-pass">New Password</label>
+                  <input class="form-control" type="password" id="account-pass" disabled>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="account-confirm-pass">Confirm Password</label>
+                  <input class="form-control" type="password" id="account-confirm-pass" disabled>
+                </div>
+              </div> -->
+        </form>
+        <hr class="padding-bottom-1x mt-3">
+        <hr class="padding-bottom-1x">
+        <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+          <h4>Contact Address</h4>
+          <a class="btn btn-primary margin-right-none" href="{% url 'App_User:UserInfoUpdateView' %}">Update Address</a>
+        </div>
+        <hr class="padding-bottom-1x">
+        <form class="row" method="POST">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-company">Company</label>
+              <input class="form-control" type="text" id="account-company" value="Bets Company Ltd." disabled>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-country">Country</label>
+              <input class="form-control" type="text" id="account-company" value="{{ profile.country }}" disabled>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-city">City</label>
+              <input class="form-control" type="text" id="account-company" value="{{ profile.city }}" disabled>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-zip">ZIP Code</label>
+              <input class="form-control" type="text" id="account-zip" value="{{ profile.zipcode }}" disabled required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-address1">Address 1</label>
+              <input class="form-control" type="text" id="account-address1" value="{{ profile.address }}" disabled
+                required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="account-address2">Address 2</label>
+              <input class="form-control" type="text" id="account-address2" disabled>
+            </div>
+          </div>
+          <div class="col-12 padding-top-1x">
+            <h4>Shipping Address</h4>
+            <hr class="padding-bottom-1x">
+            <div class="custom-control custom-checkbox d-block">
+              <input class="custom-control-input" type="checkbox" id="same_address" checked>
+              <label class="custom-control-label" for="same_address">Same as Contact Address</label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

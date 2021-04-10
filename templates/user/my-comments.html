@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+{{ user.username }} Comments
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <h1>My Comments</h1>
+      </div>
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li><a href="{% url 'App_User:ProfileView' username=user.username %}">Account</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>{{ user.username }}'s Comments</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-2">
+    <div class="row">
+      {% block profile_sidebar %}
+      {% include "user/profile_sidebar.html" %}
+      {% endblock profile_sidebar %}
+      <div class="col-lg-8">
+        <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+        <div class="table-responsive">
+          <table class="table table-hover margin-bottom-none">
+            <thead>
+              <tr>
+                <th class="text-center">Product</th>
+                <th class="text-center">Rate</th>
+                <th class="text-center">Subject</th>
+                <th class="text-center">Date</th>
+                <th class="text-center"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for comment in comments %}
+
+              <tr>
+                <td>
+                    <div class="product-info">
+                      <h4 class="product-title"><a
+                          href="{% url 'Product:ProductDetailView' slug=comment.product.slug %}">{{ comment.product.title }}</a>
+                    </div>
+                </td>
+                <td class="text-center">{{ comment.rate }}</td>
+                <td class="text-center text-lg text-medium">{{ comment.subject }}</td>
+                <td class="text-center text-lg text-medium" style="width: 15%">{{ comment.create_at|date }}</td>
+                <td class="text-left">
+                  <a href="{% url 'App_User:DeleteCommentView' id=comment.id %}" onclick="return confirm('This comment will be deleted. Are your sure?')"><i class="icon-cross text-danger fa-2x"></i></a>
+                </td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+User Sign Up {{ setting.title }}
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <h1>Register Account</h1>
+      </div>
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>Register</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-2">
+    <div class="login-box">
+      <div class="padding-top-3x hidden-md-up"></div>
+      <h3 class="margin-bottom-1x">No Account? Register</h3>
+      <p>Registration takes less than a minute but gives you full control over your orders.
+        Already a member? <span class="btn-outline-secondary btn-md"><a class="navi-link" href="{% url 'App_User:LoginView' %}">Login here</a></span>
+      </p>
+      <form class="row" method="post">
+        {% csrf_token %}
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="reg-fn">First Name</label>
+            <input class="form-control" type="text" id="reg-fn" name="first_name" value="{{ fieldValues.first_name }}"
+              required>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="reg-ln">Last Name</label>
+            <input class="form-control" type="text" id="reg-ln" name="last_name" value="{{ fieldValues.last_name }}"
+              required>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="reg-phone">Username</label>
+            <input class="form-control" type="text" id="reg-phone" name="username" value="{{ fieldValues.username }}"
+              required>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="reg-email">E-mail Address</label>
+            <input class="form-control" type="email" id="reg-email" name="email" value="{{ fieldValues.email }}"
+              required>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="reg-pass">Password</label>
+            <input class="form-control" type="password" id="reg-pass" name="password1" required>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="reg-pass-confirm">Confirm Password</label>
+            <input class="form-control" type="password" id="reg-pass-confirm" name="password2" required>
+          </div>
+        </div>
+        <div class="col-12 text-center text-sm-right">
+          <button class="btn btn-primary margin-bottom-none" type="submit">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% block footer_block %}
+{% include "home/footer.html" %}
+{% endblock footer_block %}
+</div>
+{% endblock content %}

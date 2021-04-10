@@ -1,0 +1,79 @@
+{% load static %}
+<!-- Site Footer-->
+<footer class="site-footer rounded">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <!-- Contact Info-->
+                <section class="widget widget-light-skin">
+                    <h3 class="widget-title">Get In Touch With Us</h3>
+                    <p class="text-white">Phone: +8801779874377 <br>
+                        &emsp;&emsp;&emsp;&nbsp; +8801714449016 </p>
+                    <ul class="list-unstyled text-sm text-white">
+                        <li><span>Day: Sunday-Thursday</span><br>
+                            <span>Time: 10.00 am - 4.00 pm</span>
+                        </li>
+                    </ul>
+                    <br>
+                    <p>
+                        <a class="navi-link-light"
+                            href="mailto:habibur35-2466@diu.edu.bd">habibur35-2466@diu.edu.bd</a><br>
+                        <a class="navi-link-light" href="mailto:sayeed35-2308@diu.edu.bd">sayeed35-2308@diu.edu.bd</a>
+                    </p><br>
+                    <a class="social-button shape-circle sb-facebook sb-light-skin" href="">
+                        <i class="socicon-facebook"></i>
+                    </a>
+                    <a class="social-button shape-circle sb-twitter sb-light-skin" href="">
+                        <i class="socicon-twitter"></i>
+                    </a>
+                    <a class="social-button shape-circle sb-instagram sb-light-skin" href="">
+                        <i class="socicon-instagram"></i>
+                    </a>
+                    <a class="social-button shape-circle sb-google-plus sb-light-skin" href="">
+                        <i class="socicon-googleplus"></i>
+                    </a>
+                </section>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <!-- About Us-->
+                <section class="widget widget-links widget-light-skin">
+                    <h3 class="widget-title">About Us</h3>
+                    <ul>
+                        <li><a href="{% url 'App_User:SignUpView' %}">Start Your Journey with Us</a></li>
+                        <li><a href="{% url 'Home:AboutusView' %}">About ShajBari</a></li>
+                        <li><a href="{% url 'Home:IndexView' %}">Services</a></li>
+                        <li><a href="{% url 'Product:ShopView' %}"">Our Shop</a></li>
+                    </ul>
+                </section>
+            </div>
+            <div class=" col-md-4 col-sm-12">
+                                <!-- Account / Shipping Info-->
+                                <section class="widget widget-links widget-light-skin">
+                                    <h3 class="widget-title">Account &amp; Shipping Info</h3>
+                                    <ul>
+                                        {% if user.id is not None %}
+                                        <li><a href="{% url 'App_User:ProfileView' username=user.username %}">Your
+                                                Account</a></li>
+                                        {% else %}
+                                        <li><a href="{% url 'App_User:LoginView' %}">Your Account</a></li>
+                                        {% endif %}
+
+                                    </ul>
+                                </section>
+            </div>
+        </div>
+        <hr class="hr-light mt-2">
+        <!-- Copyright-->
+        <div class="row">
+            <div class="col-sm-6">
+                <p class="footer-copyright">© All rights reserved to &nbsp; ShajBari</p>
+            </div>
+            <div class="col-sm-6">
+                <strong></strong>
+                <p class="footer-copyright text-center"><a
+                        href="https://www.privacypolicies.com/live/4b9dc4d1-bcdc-45e7-ae1c-8a9d29451fa6"
+                        target="_blank"> Privacy Policy</a></p></strong>
+            </div>
+        </div>
+    </div>
+</footer>

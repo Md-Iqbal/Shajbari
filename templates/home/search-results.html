@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+{{ query }} results
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>
+            <h1>Search Results for: {{ query }}</h1>
+          </li>
+        </ul>
+
+      </div>
+      <div class="column">
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-2">
+    <div class="row">
+      <!-- Results-->
+      <div class="col-xl-9 col-lg-8">
+        {% for product in products %}
+        <div class="card mb-4">
+          <div class="card-header"><span class="badge badge-pill badge-primary">Product</span></div>
+          <div class="card-body">
+            <div class="d-flex"><a class="pr-4 hidden-xs-down"
+                href="{% url 'Product:ProductDetailView' slug=product.slug %}" style="max-width: 225px;"><img
+                  src="{{ product.image.url }}" alt="Product"></a>
+              <div>
+                <h5><a class="navi-link"
+                    href="{% url 'Product:ProductDetailView' slug=product.slug %}">{{ product.title }}</a></h5>
+                <h6>
+                  &#2547;{{ product.price }}
+                </h6>
+                <p>{{ product.details|safe }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <!-- <div class="card mb-4">
+          <div class="card-header"><span class="badge badge-pill badge-warning">Blog post</span></div>
+          <div class="card-body">
+            <h5><a class="navi-link" href="blog-single-rs.html">How To Choose Perfect Summer Suit</a></h5>
+            <p><span class='text-highlighted'>Lorem ipsum</span> dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco <span class='text-highlighted'>lorem ipsum</span> aliquip ex ea commodo consequat.
+              Duis aute irure dolor in reprehenderit in voluptate velit esse. Aliquid id nobis, amet dolorum earum
+              maxime.</p>
+          </div>
+        </div> -->
+        <!-- Pagination-->
+        <nav class="pagination">
+          <div class="column text-center">
+            <ul class="pages">
+              {% if products.has_previous %}
+              <li><a href="?query={{ query }}&page={{ products.previous_page_number }}"><i
+                    class="fa fa-arrow-left"></i></a></li>
+              {% endif %}
+
+              {% if 4 in products.paginator.page_range %}
+              {% if page|add:"-1" >= 1 %}
+              <li><a href="?query={{ query }}&page={{  page|add:"-1" }}">{{ page|add:"-1" }}</a></li>
+              {% endif %}
+              <li><a href="?query={{ query }}&page={{  page }}">{{ page }}</a></li>
+              {% if page|add:"1" in products.paginator.page_range %}
+              <li><a href="?query={{ query }}&page={{  page|add:"1" }}">{{ page|add:"1" }}</a></li>
+              {% endif %}
+              {% else %}
+              {% for number in products.paginator.page_range %}
+              <li><a href="?query={{ query }}&page={{ number }}">{{ number }}</a></li>
+              {% endfor %}
+              {% endif %}
+              {% if products.has_next %}
+              <li><a href="?query={{ query }}&page={{ products.next_page_number }}"><i
+                    class="fa fa-arrow-right"></i></a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+FAQ - {{ setting.title }}
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+    <!-- Off-Canvas Wrapper-->
+    <div class="offcanvas-wrapper">
+      <!-- Page Title-->
+      <div class="page-title">
+        <div class="container">
+          <div class="column">
+            <h1>Help / FAQ</h1>
+          </div>
+          <div class="column">
+            <ul class="breadcrumbs">
+              <li><a href="{% url 'Home:IndexView' %}">Home</a>
+              </li>
+              <li class="separator">&nbsp;</li>
+              <li>Help / FAQ</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Page Content-->
+      <div class="container padding-bottom-3x">
+        <div class="row">
+          <!-- Side Menu-->
+          <div class="col-lg-3 col-md-4">
+            <nav class="list-group"><a class="list-group-item active" href="#">Frequently Asked Questions</a></nav>
+            <div class="padding-bottom-3x hidden-md-up"></div>
+          </div>
+          <!-- Content-->
+          <div class="col-lg-9 col-md-8">
+            <div class="accordion" id="accordion" role="tablist">
+
+              {% for faq in faqs %}
+              <div class="card">
+                <div class="card-header" role="tab">
+                  <h6><a class="collapsed" href="#collapse-{{ faq.id }}" data-toggle="collapse">{{ faq.question }}</a></h6>
+                </div>
+                <div class="collapse" id="collapse-{{ faq.id }}" data-parent="#accordion" role="tabpanel">
+                  <div class="card-body">{{ faq.answer|safe }}</div>
+                </div>
+              </div>
+              {% endfor %}
+
+            </div>
+            <!-- <h3 class="padding-top-2x">Haven't found the answer? Ask us.</h3>
+            <p class="text-muted mb-30">We normally respond within 2 business days. Most popular questions will appear on this page.</p>
+            <form class="row" method="post">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="help_name">Your Name</label>
+                  <input class="form-control form-control-rounded" type="text" id="help_name" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="help_email">Your Email</label>
+                  <input class="form-control form-control-rounded" type="email" id="help_email" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="help_subject">Subject</label>
+                  <input class="form-control form-control-rounded" type="text" id="help_subject" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="help_category">Category</label>
+                  <select class="form-control form-control-rounded" id="help_category">
+                    <option>Account Management</option>
+                    <option>Refund Policy</option>
+                    <option>Payment Procedure</option>
+                    <option>Shipping Info</option>
+                    <option>Referral Program</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="help_question">Question </label>
+                  <textarea class="form-control form-control-rounded" id="help_question" rows="8" required></textarea>
+                </div>
+              </div>
+              <div class="col-12 text-right">
+                <button class="btn btn-primary btn-rounded" type="submit">Submit Question</button>
+              </div>
+            </form> -->
+          </div>
+        </div>
+      </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+  </div>
+  {% endblock content %}

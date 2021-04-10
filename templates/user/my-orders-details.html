@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+{{ user.username }} Order Detail
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <h1>My Orders</h1>
+      </div>
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li><a href="{% url 'App_User:ProfileView' username=user.username %}">Account</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>{{ user.username }}'s order details</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-2">
+    <div class="table-responsive shopping-cart">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-center">Subtotal(&#2547;)</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in orderitems %}
+          <tr>
+            <td>
+              <div class="product-item"><a class="product-thumb"
+                  href="{% url 'Product:ProductDetailView' slug=item.product.slug %}"><img
+                    src="{{ item.product.image.url }}" alt="{{ item.product.title }}"></a>
+                <div class="product-info">
+                  <h4 class="product-title"><a
+                      href="{% url 'Product:ProductDetailView' slug=item.product.slug %}">{{ item.product.title }}</a>
+                </div>
+              </div>
+            </td>
+            <td class="text-center">{{ item.quantity }}</td>
+            <td class="text-center text-lg text-medium">&#2547; {{ item.amount }}</td>
+            <td class="text-center text-lg text-medium">{{ item.status }}</td>
+            <td class="text-center text-lg text-medium" style="width: 13%">{{ item.create_at|date }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

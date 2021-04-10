@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+{{ catdata.title }}
+{% endblock title_block %}
+{% block description_block %}
+{{ catdata.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ catdata.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <h1>Product list</h1>
+      </div>
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li><a href="{% url 'Product:ShopView' %}">Shop</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>{{ catdata.title }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-1">
+    {% for product in products %}
+    <div class="card mb-4">
+      <div class="card-header"><span class="badge badge-pill badge-primary">Product</span></div>
+      <div class="card-body">
+        <div class="d-flex"><a class="pr-4 hidden-xs-down"
+            href="{% url 'Product:ProductDetailView' slug=product.slug %}" style="max-width: 225px;"><img
+              src="{{ product.image.url }}" alt="Product"></a>
+          <div>
+            <h5><a class="navi-link"
+                href="{% url 'Product:ProductDetailView' slug=product.slug %}">{{ product.title }}</a>
+            </h5>
+            <h6>
+              &#2547; {{ product.price }}
+            </h6>
+            <p>{{ product.details|safe }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <!-- Related Products Carousel-->
+    <h3 class="text-center padding-top-2x mt-2 padding-bottom-1x">You May Also Like</h3>
+    <!-- Carousel-->
+    <div class="owl-carousel"
+      data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;576&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3},&quot;991&quot;:{&quot;items&quot;:4},&quot;1200&quot;:{&quot;items&quot;:4}} }">
+      <!-- Product-->
+      {% for product in you_may_like_products %}
+
+      <div class="grid-item">
+        <div class="product-card">
+          <a class="product-thumb" href="{% url 'Product:ProductDetailView' slug=product.slug %}"><img
+              src="{{ product.image.url }}" alt="{{ product.title }}" style="height: 150px;"></a>
+          <h3 class="product-title"><a
+              href="{% url 'Product:ProductDetailView' slug=product.slug %}">{{ product.title }}</a>
+          </h3>
+          <h4 class="product-price">
+            &#2547; {{ product.price }}
+          </h4>
+          <div class="product-buttons">
+            <a href="{% url 'Order:AddtoWishlistView' id=product.id %}" class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist"><i
+                class="fa fa-heart"></i></a>
+            <a href="{% url 'Order:AddtoCartView' id=product.id %}" class="btn btn-outline-primary btn-sm"><i
+                class="fab fa-opencart"></i> Add to Cart</a>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

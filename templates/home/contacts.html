@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title_block %}
+Contact - {{ setting.title }}
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <h1>Contacts</h1>
+      </div>
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>Contacts</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-2x mb-2">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="display-3 opacity-90 mb-30">Contact Form</div>
+        <form method="POST">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <input type="submit" class="btn btn-outline-success form-control-lg" id="large-pill-input"
+            value="Send Message">
+        </form>
+      </div>
+      <div class="col-md-8 padding-top-4x">
+        <div class="row">
+          <div class="col-md-7">
+            <div class="display-3 text-muted opacity-75 mb-30">Customer Service</div>
+          </div>
+          <div class="col-md-5">
+            <ul class="list-icon">
+              <li> <i class="icon-mail"></i><a class="navi-link"
+                  href="mailto:habibur35-2466@diu.edu.bd">habibur35-2466@diu.edu.bd</a></li>
+              <li> <i class="icon-bell"></i>+8801714449016</li>
+              <li> <i class="icon-clock"></i>1 - 2 business days</li>
+            </ul>
+          </div>
+        </div>
+        <hr class="margin-top-2x">
+        <div class="row margin-top-2x">
+          <div class="col-md-7">
+            <div class="display-3 text-muted opacity-75 mb-30">Tech Support</div>
+          </div>
+          <div class="col-md-5">
+            <ul class="list-icon">
+              <li> <i class="icon-mail"></i><a class="navi-link"
+                  href="mailto:sayeed35-2308@diu.edu.bd">sayeed35-2308@diu.edu.bd</a>
+              </li>
+              <li> <i class="icon-bell"></i>+8801779874377</li>
+              <li> <i class="icon-clock"></i>1 - 2 business days</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

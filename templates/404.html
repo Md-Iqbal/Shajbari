@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+404 Not Found
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+    <!-- Off-Canvas Wrapper-->
+    <div class="offcanvas-wrapper">
+      <!-- Page Content-->
+      <div class="container padding-top-3x padding-bottom-3x mb-1"><img class="d-block m-auto" src="{% static '' %}img/404_art.jpg" style="width: 100%; max-width: 550px;" alt="404">
+        <div class="padding-top-1x mt-2 text-center">
+          <h3>Page Not Found</h3>
+          <p>It seems we can’t find page you are looking for. <h5><a href="{% url 'Home:IndexView' %}">Go back to Homepage</a></h5> Or try using search at the top right corner of the page.</p>
+        </div>
+      </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+  </div>
+  {% endblock content %}

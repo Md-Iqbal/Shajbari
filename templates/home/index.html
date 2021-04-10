@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+{{ setting.title }}
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Content-->
+  <!-- Main Slider-->
+  <section class="hero-slider" style="background-image: url(static/img/hero-slider/main-bg.jpg);">
+    <div class="owl-carousel large-controls dots-inside"
+      data-owl-carousel="{ &quot;nav&quot;: true, &quot;dots&quot;: true, &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 7000 }">
+      {% for HomeSlider in HomeSliders %}
+        
+      <div class="item">
+        <div class="container padding-top-3x">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-lg-5 col-md-6 padding-bottom-2x text-md-left text-center">
+              <div class="from-bottom">
+                <div class="h2 text-body text-normal mb-2 pt-1">{{ HomeSlider.title }}</div>
+                <br>
+                <div class="h2 text-body text-normal mb-4 pb-1">starting at <span class="text-bold">&#2547;{{ HomeSlider.price }}</span></div>
+              </div><a class="btn btn-primary scale-up delay-1" href="{% url 'Product:ProductDetailView' slug=HomeSlider.slug %}">Shop Now</a>
+            </div>
+            <div class="col-md-6 padding-bottom-2x mb-3"><img class="d-block mx-auto"
+                src="{{ HomeSlider.image.url }}" alt="{{ HomeSlider.title }}" style="height: 300px !important;"></div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+  </section>
+  <!-- Top Categories-->
+  <section class="container padding-top-3x">
+    <h3 class="text-center mb-30">Top Categories</h3>
+    <div class="row">
+      {% for category in top_categories %}
+        
+      <div class="col-md-4 col-sm-6">
+        <div class="card mb-30"><a class="card-img-tiles" href="shop-grid-ls.html">
+            <div class="inner">
+              <div class="main-img"><img src="{{ category.image.url }}" alt="{{ category.title }}" style="height: 250px;"></div>
+            </div>
+          </a>
+          <div class="card-body text-center">
+            <h4 class="card-title">{{ category.title }}</h4>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'Home:CategoryView' id=category.id slug=category.slug %}">View Products</a>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+    <div class="text-center"><a class="btn btn-outline-secondary margin-top-none" href="{% url 'Product:ShopView' %}">All
+        Categories</a></div>
+  </section>
+  <!-- Featured Products Carousel-->
+  <section class="container padding-top-3x padding-bottom-3x">
+    <h3 class="text-center mb-30">Featured Products</h3>
+    <div class="owl-carousel"
+      data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;576&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3},&quot;991&quot;:{&quot;items&quot;:4},&quot;1200&quot;:{&quot;items&quot;:4}} }">
+      {% for product in featured_products %}
+        
+      <!-- Product-->
+      <div class="grid-item">
+        <div class="product-card">
+          <a class="product-thumb" href="{% url 'Product:ProductDetailView' slug=product.slug %}"><img
+              src="{{ product.image.url }}" alt="{{ product.title }}" style="height: 200px;"></a>
+          <h3 class="product-title"><a href="{% url 'Product:ProductDetailView' slug=product.slug %}">{{ product.title }}</a></h3>
+          <h4 class="product-price">
+            &#2547; {{ product.price }}
+          </h4>
+          <div class="product-buttons">
+            <a href="{% url 'Order:AddtoWishlistView' id=product.id %}" class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist"><i
+                class="fa fa-heart"></i></a>
+            <a href="{% url 'Order:AddtoCartView' id=product.id %}" class="btn btn-outline-primary btn-sm"><i
+                class="fab fa-opencart"></i> Add to Cart</a>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+  </section>
+  <!-- Popular Brands-->
+  <section class="bg-faded padding-top-3x padding-bottom-3x">
+    <div class="container">
+      <h3 class="text-center mb-30 pb-2">Latest Collection</h3>
+      <div class="owl-carousel"
+        data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: false, &quot;loop&quot;: true, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 4000, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:2}, &quot;470&quot;:{&quot;items&quot;:3},&quot;630&quot;:{&quot;items&quot;:4},&quot;991&quot;:{&quot;items&quot;:5},&quot;1200&quot;:{&quot;items&quot;:6}} }">
+        {% for product in latest_collections %}
+        <a href="{% url 'Product:ProductDetailView' slug=product.slug %}"><img class="d-block w-110 opacity-75 m-auto rounded-circle" src="{{ product.image.url }}" alt="{{ product.title }}"></a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <!-- Services-->
+  <section class="container padding-top-3x padding-bottom-2x">
+    <div class="row">
+      <div class="col-md-3 col-sm-6 text-center mb-30"><img
+          class="d-block w-90 img-thumbnail rounded-circle mx-auto mb-3" src="{% static '' %}img/services/01.png"
+          alt="Shipping">
+        <h6>Free Countrywide Shipping</h6>
+        <p class="text-muted margin-bottom-none">Free shipping for all orders</p>
+      </div>
+      <div class="col-md-3 col-sm-6 text-center mb-30"><img
+          class="d-block w-90 img-thumbnail rounded-circle mx-auto mb-3" src="{% static '' %}img/services/02.png"
+          alt="Money Back">
+        <h6>Money Back Guarantee</h6>
+        <p class="text-muted margin-bottom-none">We return money within 30 days</p>
+      </div>
+      <div class="col-md-3 col-sm-6 text-center mb-30"><img
+          class="d-block w-90 img-thumbnail rounded-circle mx-auto mb-3" src="{% static '' %}img/services/03.png"
+          alt="Support">
+        <h6>Customer Support</h6>
+        <p class="text-muted margin-bottom-none">Friendly customer support</p>
+      </div>
+      <div class="col-md-3 col-sm-6 text-center mb-30"><img
+          class="d-block w-90 img-thumbnail rounded-circle mx-auto mb-3" src="{% static '' %}img/services/04.png"
+          alt="Payment">
+        <h6>Secure Online Payment</h6>
+        <p class="text-muted margin-bottom-none">We posess SSL / Secure Certificate</p>
+      </div>
+    </div>
+  </section>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

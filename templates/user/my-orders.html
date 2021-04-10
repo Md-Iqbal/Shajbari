@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+{{ user.username }} Order List
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <h1>My Orders</h1>
+      </div>
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li><a href="{% url 'App_User:ProfileView' username=user.username %}">Account</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>{{ user.username }}'s Orders</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-2">
+    <div class="row">
+      {% block profile_sidebar %}
+      {% include "user/profile_sidebar.html" %}
+      {% endblock profile_sidebar %}
+      <div class="col-lg-8">
+        <div class="padding-top-2x mt-2 hidden-lg-up"></div>
+        <div class="table-responsive">
+          <table class="table table-hover margin-bottom-none">
+            <thead>
+              <tr>
+                <th>Order Tracking Id #</th>
+                <th>Date Purchased</th>
+                <th>Status</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders %}
+
+              <tr>
+                <td><a class="text-medium navi-link" href="{% url 'App_User:UserOrderDetailView' id=order.id %}">{{ order.orderTrackingId }}</a></td>
+                <td>{{ order.create_at|date }}</td>
+                <td><span class="text-danger">{{ order.status }}</span></td>
+                <td><span class="text-medium">&#2547; {{ order.total }}</span></td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

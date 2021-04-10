@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+Checkout
+{% endblock title_block %}
+{% block description_block %}
+{{ product.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ product.keywords }}
+{% endblock keywords_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <h1>Checkout</h1>
+      </div>
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>Checkout</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-2">
+    <div class="row">
+      <!-- Checkout Adress-->
+      <div class="col-lg-8">
+        <div class="checkout-steps"><a
+            class="active" href="{% url 'Order:CheckoutView' %}">1. Review & Address</a><a href="{% url 'Order:CartListView' %}"><span class="angle"></span><i class="fa fa-arrow-left"></i>&nbsp;Back To
+              Cart</a>
+        </div>
+        <h4>Review Your Order</h4>
+        <hr class="padding-bottom-1x">
+        <div class="table-responsive shopping-cart">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th class="text-center">Quantity</th>
+                <th class="text-center">Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for shopcart in shopcarts %}
+              <tr>
+                <td>
+                  <div class="product-item"><a class="product-thumb"
+                      href="{% url 'Product:ProductDetailView' slug=shopcart.product.slug %}"><img
+                        src="{{ shopcart.product.image.url }}" alt="{{ shopcart.product.title }}"></a>
+                    <div class="product-info">
+                      <h4 class="product-title"><a
+                          href="{% url 'Product:ProductDetailView' slug=shopcart.product.slug %}">{{ shopcart.product.title }}</a>
+                      </h4>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-center text-lg text-medium">x {{ shopcart.quantity }}</td>
+                <td class="text-center text-lg text-medium">&#2547;{{ shopcart.Sub_Total_Amount }}</td>
+                <td class="text-center"><a class="btn btn-outline-primary btn-sm" href="">Edit</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="shopping-cart-footer">
+          <div class="column"></div>
+          <div class="column text-lg">Total: <span class="text-medium">&#2547; {{ total_price }}</span></div>
+        </div><br><br>
+        <h4>Billing Address</h4>
+        <hr class="padding-bottom-1x">
+        <hr class="padding-bottom-1x">
+        <form class="row" method="POST">
+          {% csrf_token %}
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="checkout-fn">First Name</label>
+              <input class="form-control" type="text" id="account-fn" name="first_name" value="{{ user.first_name }}">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="checkout-ln">Last Name</label>
+              <input class="form-control" type="text" id="account-ln" name="last_name" value="{{ user.last_name }}">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="checkout-email">E-mail Address</label>
+              <input class="form-control" type="email" id="account-email" name="email" value="{{ user.email }}">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="checkout-phone">Phone Number</label>
+              <input class="form-control" type="text" id="account-phone" name="phone" value="{{ profile.phone }}">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="checkout-country">Country</label>
+              <input class="form-control" type="text" id="account-company" name="country" value="{{ profile.country }}">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="checkout-city">City</label>
+              <input class="form-control" type="text" id="account-company" name="city" value="{{ profile.city }}">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="checkout-zip">ZIP Code</label>
+              <input class="form-control" type="text" id="account-zip" name="zipcode" value="{{ profile.zipcode }}">
+            </div>
+          </div>
+          <div class="col-sm-6"></div>
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="checkout-address1">Address</label>
+              <textarea class="form-control" name="address" cols="30" rows="10" id="account-address1">
+                  {{ profile.address }}
+                </textarea>
+            </div>
+          </div>
+          <div class="col-sm-7"></div>
+          <div class="col-sm-1"><label for="checkout-zip">Total: &#2547; </label></div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <input class="form-control" style="border-width: 0;" type="text" id="account-zip" name="total" value="{{ total_price }}">
+            </div>
+          </div>
+          <div class="col-sm-8"></div>
+            <div class="col-sm-4">
+              <button class="btn btn-primary" type="submit"><span class="hidden-xs-down">Save & Proceed to Payment</span></a>
+            </div>
+        </form>
+      </div>
+      <!-- Sidebar          -->
+      <div class="col-lg-4">
+        <h4>Choose Shipping Method</h4>
+        <hr class="padding-bottom-1x">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="thead-default">
+              <tr>
+                <th></th>
+                <th>Shipping method</th>
+                <th>Delivery time</th>
+                <th>Handling fee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="align-middle">
+                  <div class="custom-control custom-radio mb-0">
+                    <input class="custom-control-input" type="radio" id="local" name="shipping-method" checked>
+                    <label class="custom-control-label" for="local"></label>
+                  </div>
+                </td>
+                <td class="align-middle"><span class="text-medium">Regular Local Shipping</span><br><span
+                    class="text-muted text-sm">All
+                    Addresses</span></td>
+                <td class="align-middle">up to one week</td>
+                <td class="align-middle">
+                  <h4><strong>Free of cost</strong></h4>
+                </td>
+              </tr>
+              <tr>
+                <td class="align-middle">
+                  <div class="custom-control custom-radio mb-0">
+                    <input class="custom-control-input" type="radio" id="flat" name="shipping-method">
+                    <label class="custom-control-label" for="flat"></label>
+                  </div>
+                </td>
+                <td class="align-middle"><span class="text-medium">Special Local Shipping</span><br><span
+                    class="text-muted text-sm">All
+                    Addresses</span></td>
+                <td class="align-middle">1 - 2 days</td>
+                <td class="align-middle">&#2547; 490</td>
+              </tr>
+              <tr>
+                <td class="align-middle">
+                  <div class="custom-control custom-radio mb-0">
+                    <input class="custom-control-input" type="radio" id="courier" name="shipping-method">
+                    <label class="custom-control-label" for="courier"></label>
+                  </div>
+                </td>
+                <td class="align-middle"><span class="text-medium">Third party courier</span><br><span
+                    class="text-muted text-md">All
+                    Addresses(Only Courier booth)</span></td>
+                <td class="align-middle">2 - 4 days</td>
+                <td class="align-middle">&#2547; 501</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <aside class="sidebar">
+          <div class="padding-top-2x hidden-lg-up"></div>
+          <!-- Promo Banner-->
+          <section class="promo-box mt-5" style="background-image: url(img/banners/02.jpg);"><span class="overlay-dark"
+              style="opacity: .4;"></span>
+            <div class="promo-box-content text-center padding-top-2x padding-bottom-2x">
+              <h4 class="text-light text-thin text-shadow">New Collection of</h4>
+              <h3 class="text-bold text-light text-shadow">Sunglasses</h3><a class="btn btn-outline-white btn-sm"
+                href="shop-grid-ls.html">Shop Now</a>
+            </div>
+          </section>
+          <!-- Promo Banner-->
+          <section class="promo-box mt-5" style="background-image: url(img/banners/02.jpg);"><span class="overlay-dark"
+              style="opacity: .4;"></span>
+            <div class="promo-box-content text-center padding-top-2x padding-bottom-2x">
+              <h4 class="text-light text-thin text-shadow">New Collection of</h4>
+              <h3 class="text-bold text-light text-shadow">Sunglasses</h3><a class="btn btn-outline-white btn-sm"
+                href="shop-grid-ls.html">Shop Now</a>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

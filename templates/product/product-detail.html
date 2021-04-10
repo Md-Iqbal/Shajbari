@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+{{ product.title }}
+{% endblock title_block %}
+{% block description_block %}
+{{ product.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ product.keywords }}
+{% endblock keywords_block %}
+
+{% block css_block %}
+<style>
+  .star-ratings-sprite {
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
+    font-size: 0px;
+    height: 21px;
+    line-height: 0;
+    overflow: hidden;
+    text-indent: -999em;
+    width: 110px;
+    margin: 0 auto;
+
+  }
+
+  .star-ratings-sprite-rating {
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
+    background-position: 0 100%;
+    float: left;
+    height: 21px;
+    display: block;
+  }
+</style>
+{% endblock css_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li><a href="{% url 'Product:ShopView' %}">Shop</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>{{ product.title }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-1">
+    <div class="row">
+      <!-- Poduct Gallery-->
+      <div class="col-md-6">
+        <div class="product-gallery">
+          <div class="product-carousel owl-carousel gallery-wrapper">
+            <div class="gallery-item" data-hash="one"><a href="{{ product.image.url }}" data-size="1000x667"><img
+                  src="{{ product.image.url }}" alt="Product"></a></div>
+            {% for image in images %}
+            <div class="gallery-item" data-hash="two">
+              <a href="{{ image.image.url }}" data-size="1000x667">
+                <img src="{{ image.image.url }}" alt="Product">
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+          <ul class="product-thumbnails">
+            <li class="active"><a href="#one"><img src="{{ product.image.url }}" alt="Product"></a></li>
+            {% for image in images %}
+            <li><a href="#two"><img src="{{ image.image.url }}" alt="Product"></a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <!-- Product Info-->
+      <div class="col-md-6">
+        <div class="padding-top-2x mt-2 hidden-md-up"></div>
+        <div class="star-ratings-sprite d-inline-block" style="margin-left: 3px;"><span
+            style="width:{% widthratio product.avaregereview 1 20 %}%" class="star-ratings-sprite-rating"></span></div>
+        <span class="text-muted align-middle">&nbsp;&nbsp;{{ product.avaregereview |stringformat:".2f"}} |
+          {{ product.countreview}} customer reviews</span>
+        <h2 class="padding-top-1x text-normal">{{ product.title }}</h2><span class="h2 d-block">
+          &#2547; {{ product.price }}</span>
+        <p>{{ product.details|safe }}</p>
+        <div class="row margin-top-1x">
+          <div class="col-sm-5">
+            <div class="d-inline-block sp-buttons my-2 ml-5">
+              <a href="{% url 'Order:AddtoWishlistView' id=product.id %}" class="btn btn-outline-secondary btn-sm btn-wishlist ml-2" data-toggle="tooltip"
+                title="Whishlist"><i class="fa fa-heart" data-toggle="tooltip" title="Whishlist"></i>
+            </a>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <form action="{% url 'Order:AddtoCartView' id=product.id %}" method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" class="input form-control" name="quantity" value="1" min="1"
+                  max="{{ product.amount }}">
+                <button type="submit" class="btn btn-primary"><i class="fab fa-opencart" data-toast data-toast-type="success" data-toast-position="topRight" data-toast-icon="icon-circle-check" data-toast-title="Product" data-toast-message="successfuly added to cart!"></i> Add to Cart</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <hr class="mb-3">
+      </div>
+    </div>
+    <!-- Product Tabs-->
+    <div class="row padding-top-3x mb-3">
+      <div class="col-lg-10 offset-lg-1">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item"><a class="nav-link active" href="#description" data-toggle="tab"
+              role="tab">Description</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews" data-toggle="tab" role="tab">Reviews
+              ({{ product.countreview}})</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="description" role="tabpanel">
+            {{ product.description|safe }}
+          </div>
+          <div class="tab-pane fade" id="reviews" role="tabpanel">
+            <!-- Review-->
+            {% for comment in comments %}
+            <div class="comment">
+              <div class="comment-body">
+                <div class="comment-header d-flex flex-wrap justify-content-between">
+                  <h4 class="comment-title">{{ comment.subject }}<small>{{ comment.create_at }}</small></h4>
+                  <div class="mb-2">
+                    <div class="rating-stars">
+                      <i class="{% if comment.rate >= 1 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+                      <i class="{% if comment.rate >= 2 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+                      <i class="{% if comment.rate >= 3 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+                      <i class="{% if comment.rate >= 4 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+                      <i class="{% if comment.rate >= 5 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="comment-text">{{ comment.comment }}</p>
+                <div class="comment-footer"><span class="comment-meta">{{ comment.user.username }}</span></div>
+              </div>
+            </div>
+            {% endfor %}
+            <!-- Review Form-->
+            <h5 class="mb-30 padding-top-1x">Leave Review</h5>
+            <form action="{% url 'Product:MakeCommentView' id=product.id %}" class="row" method="POST">
+              {% csrf_token %}
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="review_subject">Subject</label>
+                  <input class="form-control form-control-rounded" name="subject" type="text" id="review_subject"
+                    required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="review_rating">Rating</label>
+                  <select class="form-control form-control-rounded" id="review_rating" name="rate">
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="2">2 Stars</option>
+                    <option value="1">1 Star</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="review_text">Review </label>
+                  <textarea class="form-control form-control-rounded" id="review_text" rows="8" name="comment"
+                    required></textarea>
+                </div>
+              </div>
+              {% if user.id is not None %}
+              <div class="col-12 text-right">
+                <button class="btn btn-outline-primary" type="submit">Submit Review</button>
+              </div>
+              {% else %}
+              <div class="col-12 text-left">
+                <h4>You must log in first to send a review. <a class="btn btn-warning btn-sm" href="{% url 'App_User:LoginView' %}">Login Here</a></h4>
+              </div>
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Related Products Carousel-->
+    <h3 class="text-center padding-top-2x mt-2 padding-bottom-1x">You May Also Like</h3>
+    <!-- Carousel-->
+    <div class="owl-carousel"
+      data-owl-carousel="{ &quot;nav&quot;: false, &quot;dots&quot;: true, &quot;margin&quot;: 30, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;576&quot;:{&quot;items&quot;:2},&quot;768&quot;:{&quot;items&quot;:3},&quot;991&quot;:{&quot;items&quot;:4},&quot;1200&quot;:{&quot;items&quot;:4}} }">
+      <!-- Product-->
+      {% for product in you_may_like_products %}
+
+      <div class="grid-item">
+        <div class="product-card">
+          <a class="product-thumb" href="{% url 'Product:ProductDetailView' slug=product.slug %}"><img
+              src="{{ product.image.url }}" alt="{{ product.title }}" style="height: 150px;"></a>
+          <h3 class="product-title"><a
+              href="{% url 'Product:ProductDetailView' slug=product.slug %}">{{ product.title }}</a>
+          </h3>
+          <h4 class="product-price">
+            &#2547; {{ product.price }}
+          </h4>
+          <div class="product-buttons">
+            <a href="{% url 'Order:AddtoWishlistView' id=product.id %}" class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist"><i
+                class="fa fa-heart"></i></a>
+            <a href="{% url 'Order:AddtoCartView' id=product.id %}" class="btn btn-outline-primary btn-sm"><i
+                class="fab fa-opencart"></i> Add to Cart</a>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

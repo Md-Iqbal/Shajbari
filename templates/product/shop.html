@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}
+All Products - {{ setting.title }}
+{% endblock title_block %}
+{% block description_block %}
+{{ setting.description }}
+{% endblock description_block %}
+{% block keywords_block %}
+{{ setting.keywords }}
+{% endblock keywords_block %}
+
+{% block css_block %}
+{% endblock css_block %}
+
+
+{% block category_block %}
+{% include 'home/category_menu.html' %}
+{% endblock category_block %}
+{% block header_block %}
+{% include "home/header.html" %}
+{% endblock header_block %}
+{% block content %}
+<!-- Off-Canvas Wrapper-->
+<div class="offcanvas-wrapper">
+  <!-- Page Title-->
+  <div class="page-title">
+    <div class="container">
+      <div class="column">
+        <ul class="breadcrumbs">
+          <li><a href="{% url 'Home:IndexView' %}">Home</a>
+          </li>
+          <li class="separator">&nbsp;</li>
+          <li>Shop</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content-->
+  <div class="container padding-bottom-3x mb-1">
+    <!-- Shop Toolbar-->
+    <!-- <div class="shop-toolbar padding-bottom-1x mb-2">
+      <div class="column">
+        <div class="shop-sorting">
+          <label for="sorting">Sort by:</label>
+          <select class="form-control" id="sorting">
+            <option>Popularity</option>
+            <option>Low - High Price</option>
+            <option>High - Low Price</option>
+            <option>Avarage Rating</option>
+            <option>A - Z Order</option>
+            <option>Z - A Order</option>
+          </select><span class="text-muted">Showing:&nbsp;</span><span>1 - 12 items</span>
+        </div>
+      </div>
+      <div class="column">
+        <div class="shop-view"><a class="grid-view active"
+            href="shop-grid-ns.html"><span></span><span></span><span></span></a><a class="list-view"
+            href="shop-list-ns.html"><span></span><span></span><span></span></a></div>
+      </div>
+    </div> -->
+    <!-- Products Grid-->
+    <div class="isotope-grid cols-4 mb-2">
+      <div class="gutter-sizer"></div>
+      <div class="grid-sizer"></div>
+      <!-- Product-->
+
+      {% for product in products %}
+      <div class="grid-item">
+        <div class="product-card">
+          <div class="rating-stars">
+            <i class="{% if product.avaregereview >= 1 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+            <i class="{% if product.avaregereview >= 2 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+            <i class="{% if product.avaregereview >= 3 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+            <i class="{% if product.avaregereview >= 4 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+            <i class="{% if product.avaregereview >= 5 %}fas fa-star{% else %} far fa-star{% endif %}"></i>
+          </div><a class="product-thumb" href="{% url 'Product:ProductDetailView' slug=product.slug %}"><img
+              src="{{ product.image.url }}" alt="{{ product.title }}" style="height:200px !important"><span
+              style="width:{% widthratio product.avaregereview 1 20 %}%" class="star-ratings-sprite-rating"></span></a>
+          <h3 class="product-title"><a
+              href="{% url 'Product:ProductDetailView' slug=product.slug %}">{{ product.title }}</a></h3>
+          <h4 class="product-price">
+            &#2547; {{ product.price }}
+          </h4>
+          <div class="product-buttons">
+            <a href="{% url 'Order:AddtoWishlistView' id=product.id %}" class="btn btn-outline-secondary btn-sm btn-wishlist" data-toggle="tooltip" title="Whishlist"><i
+                class="fa fa-heart"></i></a>
+            <a href="{% url 'Order:AddtoCartView' id=product.id %}" class="btn btn-outline-primary btn-sm"><i
+                class="fab fa-opencart"></i> Add to Cart</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Pagination-->
+    <nav class="pagination">
+      <div class="column text-center">
+        <ul class="pages">
+          {% if products.has_previous %}
+          <li><a href="?page={{ products.previous_page_number }}"><i class="fa fa-arrow-left"></i></a>
+          </li>
+          {% endif %}
+
+          {% if 4 in products.paginator.page_range %}
+          {% if page|add:"-1" >= 1 %}
+          <li><a href="?page={{  page|add:"-1" }}">{{ page|add:"-1" }}</a></li>
+          {% endif %}
+          <li><a href="?page={{  page }}">{{ page }}</a></li>
+          {% if page|add:"1" in products.paginator.page_range %}
+          <li><a href="?page={{  page|add:"1" }}">{{ page|add:"1" }}</a></li>
+          {% endif %}
+          {% else %}
+          {% for number in products.paginator.page_range %}
+          <li><a href="?page={{ number }}">{{ number }}</a></li>
+          {% endfor %}
+          {% endif %}
+          {% if products.has_next %}
+          <li><a href="?page={{ products.next_page_number }}"><i class="fa fa-arrow-right"></i></a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+  </div>
+  {% block footer_block %}
+  {% include "home/footer.html" %}
+  {% endblock footer_block %}
+</div>
+{% endblock content %}

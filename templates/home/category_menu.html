@@ -1,0 +1,70 @@
+{% load static %}
+{% load custom_tags %}
+{% load mptt_tags %}
+<!-- Off-Canvas Mobile Menu-->
+<div class="offcanvas-container" id="mobile-menu">
+    {% if user.id is not None %}
+    <a class="account-link" href="{% url 'App_User:ProfileView' username=user.username %}">
+        <div class="user-ava"><img src="{{ request.session.userimage }}" alt="{{ user.username }}">
+        </div>
+        <div class="user-info">
+            <h6 class="user-name">{{ user.first_name }} {{ user.last_name }}</h6>
+        </div>
+    </a>
+    {% endif %}
+    <nav class="offcanvas-menu">
+        <ul class="menu">
+            <li class="has-children active">
+                <span><a href="{% url 'Home:IndexView' %}"><span>Home</span></a></span>
+            </li>
+            <li class="has-children"><span><a href=""><span>Shop Category</span></a><span
+                        class="sub-menu-toggle"></span></span>
+                <ul class="offcanvas-submenu">
+                    <span class="lead text-white">Top Categories</span>
+                    <hr class="margin-bottom-1x">
+                    {% CategoryList as category %}
+                    {% recursetree category %}
+                    <li {% if not node.is_leaf_node %} class="has-children" {% endif %}>
+                        <span><a href="{% url 'Home:CategoryView' id=node.id slug=node.slug %} "><span>{{ node.title }}</span></a>
+                        {% if not node.is_leaf_node %}
+                        <span class="sub-menu-toggle"></span></span>
+                        <ul class="offcanvas-submenu">
+                            <span class="lead text-white">Sub Categories</span>
+                            <hr class="margin-bottom-1x">
+                            <li>
+                                <a href="{% url 'Home:CategoryView' id=node.id slug=node.slug %}">{{ children }}</a>
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </li>
+                    {% endrecursetree %}
+                </ul>
+            </li>
+            <li class="has-children"><span><a href="{% url 'Product:ShopView' %}"><span>Shop</span></a><span class="sub-menu-toggle"></span></span>
+                <ul class="offcanvas-submenu">
+                    <li><a href="{% url 'Product:ShopView' %}"><span>Shop</span></a>
+                    </li>
+                    <li><a href="{% url 'Order:CartListView' %}">Cart</a></li>
+                </ul>
+            </li>
+            {% if user.id is None %}
+            <li class="has-children"><span><a href="{% url 'App_User:LoginView' %}"><span>Account</span></a><span
+                        class="sub-menu-toggle"></span></span>
+                <ul class="offcanvas-submenu">
+                    <li><a href="{% url 'App_User:LoginView' %}">Login</a></li>
+                    <li><a href="{% url 'App_User:SignUpView' %}">Register</a></li>
+                </ul>
+            </li>
+            {% endif %}
+            <li class="has-children"><span><a href="#"><span>Other</span></a><span
+                        class="sub-menu-toggle"></span></span>
+                <ul class="offcanvas-submenu">
+                    <li><a href="{% url 'Home:AboutusView' %}">About Us</a></li>
+                    <li><a href="{% url 'Home:ContactView' %}">Contacts</a></li>
+                    <li><a href="{% url 'Home:faqView' %}">Help / FAQ</a></li>
+                    <li><a class="text-danger" href="docs/dev-setup.html">Documentation</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>

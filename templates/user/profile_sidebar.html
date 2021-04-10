@@ -1,0 +1,27 @@
+<div class="col-lg-4">
+    <aside class="user-info-wrapper">
+        <div class="user-cover" style="background-image: url('/static/img/account/user-cover-img.jpg');">
+        </div>
+        <div class="user-info">
+            <div class="user-avatar"><img src="{{ profile.image.url }}"
+                    alt="{{ user.username }}"></div>
+            <div class="user-data">
+                <h4>{{ user.first_name }} {{ user.last_name }}</h4><span>Joined
+                    {{ user.date_joined|date }}</span>
+            </div>
+        </div>
+    </aside>
+    <nav class="list-group">
+        <a class="list-group-item" href="{% url 'App_User:ProfileView' username=user.username %}"><i
+                class="far fa-user-circle fa-2x"></i> Profile</a>
+        <a class="list-group-item" href="{% url 'App_User:UserPasswordUpdateView' %}"><i class="fas fa-user-shield fa-2x"></i> Change Password</a>
+        <a class="list-group-item with-badge" href="{% url 'App_User:OrderHistoryView' %}"><i class="fab fa-opencart fa-2x"></i>
+             My Orders<span class="badge badge-primary badge-pill">6</span></a>
+        <a class="list-group-item with-badge" href="{% url 'App_User:UserCommentListView' %}"><i class="fas fa-comments fa-2x"></i>
+             My Comments<span class="badge badge-primary badge-pill"></span></a>
+        <a class="list-group-item with-badge" href="{% url 'App_User:WishlistHistoryView' %}"><i
+                class="fa fa-heart fa-2x"></i>
+            My Wishlist
+            <span class="badge badge-primary badge-pill">3</span></a>
+    </nav>
+</div>
