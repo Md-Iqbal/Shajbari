@@ -1,0 +1,5 @@
+manage.py -->  /home/mdiqbal00/Shajbari
+setting.py -->  /home/mdiqbal00/Shajbari/ecommerce
+venv name -->  shajbari_venv
+venv path -->  /home/mdiqbal00/.virtualenvs/shajbari_venv
+mdiqbal00.pythonanywhere.com

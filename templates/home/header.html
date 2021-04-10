@@ -86,7 +86,7 @@
                     <li><a href="{% url 'Home:AboutusView' %}">About Us</a></li>
                     <li><a href="{% url 'Home:ContactView' %}">Contacts</a></li>
                     <li><a href="{% url 'Home:faqView' %}">Help / FAQ</a></li>
-                    <li><a class="text-danger" href="docs/dev-setup.html">Documentation</a></li>
+                    <li><a class="text-danger" href="https://github.com/Md-Iqbal/Shajbari">Documentation</a></li>
                 </ul>
             </li>
         </ul>
@@ -108,7 +108,7 @@
                         </li>
                         <li><a href="{% url 'App_User:ProfileView' username=user.username %}">My Profile</a></li>
                         <li><a href="{% url 'App_User:OrderHistoryView' %}">Orders List</a></li>
-                        <li><a href="account-wishlist.html">Wishlist</a></li>
+                        <li><a href="{% url 'App_User:WishlistHistoryView' %}">Wishlist</a></li>
                         <li class="sub-menu-separator"></li>
                         <li><a href="{% url 'App_User:LogoutView' %}"> <i class="icon-unlock"></i>Logout</a></li>
                     </ul>
