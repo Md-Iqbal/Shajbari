@@ -19,7 +19,7 @@ Unzip the file and go to the directory typing this command
 
 $ cd Shajbari
 
-To open activate the virtual environment, go through these command line below.
+To activate the virtual environment, go through these command line below.
 
 $ & venv_eshop/Scripts/activate
 
