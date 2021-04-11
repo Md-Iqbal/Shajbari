@@ -12,28 +12,40 @@
 # Getting Started
 
 Clone the repository with 
-$ git clone https://www/github.com/Md-Iqbal/ShajBari.git
 
-Unzip the file and go to the directory.
+$ git clone https://github.com/Md-Iqbal/Shajbari.git
 
-Open terminal and go through these command line below.
+Unzip the file and go to the directory typing this command
 
-$ virtualenv project-env
-$ source project-env/bin/activate
-$ pip install -r https://raw.githubusercontent.com/juanifioren/django-project-template/master/requirements.txt
+$ cd Shajbari
 
-# You may want to change the name `projectname`.
-$ django-admin startproject --template https://github.com/juanifioren/django-project-template/archive/master.zip projectname
+To open activate the virtual environment, go through these command line below.
 
-$ cd projectname/
-$ cp settings_custom.py.edit settings_custom.py
+$ & venv_eshop/Scripts/activate
+
+Install all dependencies
+
+$ pip install -r requirements.txt
+
+migrate the database
+
+$ python manage.py makemigrationos
 $ python manage.py migrate
-$ python manage.py runserver
-Features
+$ python manage.py makemigrationos
 
-Basic Django scaffolding (commands, templatetags, statics, media files, etc).
-Split settings in two files. settings_custom.py for specific environment settings (localhost, production, etc). projectname/settings.py for core settings.
-Simple logging setup ready for production envs.
+# Run the project
+
+$ python manage.py runserver
+
+# Change smtp mail address:
+on settings.py go to EMAIL_HOST_USER and change the email address as you desired.
+
+# Features
+
+Basic Django scaffolding (commands, templatetags, statics, media files, etc). There is Sandbox Payment System. Simple registration system.
+
+
+
 Contributing
 
 I love contributions, so please feel free to fix bugs, improve things, provide documentation. Just send a pull request.
